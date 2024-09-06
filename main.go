@@ -71,12 +71,14 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-	weather := fetchWeather(settings.Query, settings.ApiKey)
-	printWeather(weather)
+	weather := fetchForecastWeather(settings.Query, settings.ApiKey)
+	printForecastWeather(weather)
+	weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	PrintCurrentWeather(weather2)
 
 }
 
-func fetchWeather(query string, apiKey string) Weather {
+func fetchForecastWeather(query string, apiKey string) Weather {
 
 	res, err := http.Get("http://api.weatherapi.com/v1/forecast.json?key=" + apiKey + "&q=" + query + "&days=10&aqi=yes&alerts=yes")
 	if err != nil {
@@ -112,10 +114,9 @@ func fetchWeather(query string, apiKey string) Weather {
 	return weather
 }
 
-func printWeather(weather Weather) {
+func printForecastWeather(weather Weather) {
 
 	location, current, hours := weather.Location, weather.Current, weather.Forecast.Forecastday[0].Hour
-	airQ := weather.Forecast.Forecastday[0].Hour[0].AirQuality
 
 	fmt.Printf("%s, %s: %.0fC, %s, Time is: %s\n",
 		location.Name,
@@ -143,14 +144,16 @@ func printWeather(weather Weather) {
 		)
 	}
 
-	fmt.Printf("%.0f Co, %.0f No2, %.0f O3, %.0f So2, %.0f Pm2_5, %.0f Pm10, %.0f Defra\n",
-		airQ.Co,
-		airQ.No2,
-		airQ.O3,
-		airQ.So2,
-		airQ.Pm2_5,
-		airQ.Pm10,
-		airQ.Defra,
-	)
+	// airQ := weather.Forecast.Forecastday[0].Hour[0].AirQuality
+
+	// fmt.Printf("%.0f Co, %.0f No2, %.0f O3, %.0f So2, %.0f Pm2_5, %.0f Pm10, %.0f Defra\n",
+	// 	airQ.Co,
+	// 	airQ.No2,
+	// 	airQ.O3,
+	// 	airQ.So2,
+	// 	airQ.Pm2_5,
+	// 	airQ.Pm10,
+	// 	airQ.Defra,
+	// )
 
 }

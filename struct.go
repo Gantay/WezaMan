@@ -8,10 +8,15 @@ type Weather struct {
 	} `json:"Location"`
 
 	Current struct {
-		TemC      float64 `json:"temp_c"`
-		WindSpeed float64 `json:"wind_kph"`
-		Uv        float64 `json:"uv"`
-		Condition struct {
+		TemC       float64 `json:"temp_c"`
+		Humidity   int32   `json:"humidity"`
+		WindSpeed  float64 `json:"wind_kph"`
+		WindDegree float64 `json:"wind_degree"`
+		FeelsLike  float64 `json:"feelslike_c"`
+		WindChill  float64 `json:"windchill_c"`
+		Uv         float64 `json:"uv"`
+		DewPoint   float64 `json:"dewpoint_c"`
+		Condition  struct {
 			Text string `json:"text"`
 		} `json:"condition"`
 		AirQuality struct {
