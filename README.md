@@ -1,0 +1,2 @@
+# WezaMan
+TUI Weather app
