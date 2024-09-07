@@ -34,7 +34,7 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	}
 
 	currentTime := time.Now()
-	timeString := currentTime.Format("15_02-01-2006")
+	timeString := currentTime.Format("2006-01-02:_15_")
 	fileName := fmt.Sprintf("%s.json", timeString)
 
 	config, err := os.UserConfigDir()
@@ -42,7 +42,17 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 		panic(err)
 	}
 
-	err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), body, 0740)
+	var bodyFormated interface{}
+	err = json.Unmarshal(body, &bodyFormated)
+	if err != nil {
+		panic(err)
+	}
+	formattedJSON, err := json.MarshalIndent(bodyFormated, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), formattedJSON, 0740)
 	if err != nil {
 		panic(err)
 	}
