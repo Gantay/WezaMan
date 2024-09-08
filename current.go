@@ -47,7 +47,7 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	if err != nil {
 		panic(err)
 	}
-	formattedJSON, err := json.MarshalIndent(bodyFormated, "", "  ")
+	formattedJSON, err := json.MarshalIndent(bodyFormated, "", " ")
 	if err != nil {
 		panic(err)
 	}

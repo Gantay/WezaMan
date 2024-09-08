@@ -73,8 +73,10 @@ func main() {
 	}
 	weather := fetchForecastWeather(settings.Query, settings.ApiKey)
 	printForecastWeather(weather)
-	weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	PrintCurrentWeather(weather2)
+	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	// PrintCurrentWeather(weather2)
+
+	Database()
 
 }
 
@@ -129,18 +131,11 @@ func printForecastWeather(weather Weather) {
 		date := time.Unix(hour.TimeEpoch, 0)
 
 		fmt.Printf(
-			"%s - %.01fC, %.0f, %s\n %.0f Co, %.0f No2, %.0f O3, %.0f So2, %.0f Pm2_5, %.0f Pm10, %.0f Defra\n",
+			"%s - %.01fC, %.0f, %s\n",
 			date.Format("15:04"),
 			hour.TempC,
 			hour.ChanceOfRain,
 			hour.Condition.Text,
-			hour.AirQuality.Co,
-			hour.AirQuality.No2,
-			hour.AirQuality.O3,
-			hour.AirQuality.So2,
-			hour.AirQuality.Pm2_5,
-			hour.AirQuality.Pm10,
-			hour.AirQuality.Defra,
 		)
 	}
 
