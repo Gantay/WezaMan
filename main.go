@@ -76,7 +76,7 @@ func main() {
 	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
 	// PrintCurrentWeather(weather2)
 
-	Database()
+	Database(weather)
 
 }
 
