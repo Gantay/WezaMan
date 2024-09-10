@@ -4,29 +4,31 @@ type Weather struct {
 	Location struct {
 		Name      string `json:"name"`
 		Country   string `json:"country"`
-		TimeLocal string `json:"localtime"`
+		TimeLocal int64  `json:"localtime_epoch"`
 	} `json:"Location"`
 
 	Current struct {
-		TemC       float64 `json:"temp_c"`
-		Humidity   int32   `json:"humidity"`
-		WindSpeed  float64 `json:"wind_kph"`
-		WindDegree float64 `json:"wind_degree"`
-		FeelsLike  float64 `json:"feelslike_c"`
-		WindChill  float64 `json:"windchill_c"`
-		Uv         float64 `json:"uv"`
-		DewPoint   float64 `json:"dewpoint_c"`
+		TemC       float32 `json:"temp_c"`
+		Humidity   int8    `json:"humidity"`
+		WindSpeed  float32 `json:"wind_kph"`
+		WindDegree float32 `json:"wind_degree"`
+		FeelsLike  float32 `json:"feelslike_c"`
+		HeatIndex  float32 `json:"heatindex_c"`
+		WindChill  float32 `json:"windchill_c"`
+		Uv         float32 `json:"uv"`
+		DewPoint   float32 `json:"dewpoint_c"`
 		Condition  struct {
 			Text string `json:"text"`
+			Code int16  `json:"code"`
 		} `json:"condition"`
 		AirQuality struct {
-			Co    float64 `json:"co"`
-			No2   float64 `json:"no2"`
-			O3    float64 `json:"o3"`
-			So2   float64 `json:"so2"`
-			Pm2_5 float64 `json:"pm2_5"`
-			Pm10  float64 `json:"pm10"`
-			Defra float64 `json:"gb-defra-index"`
+			Co    float32 `json:"co"`
+			No2   float32 `json:"no2"`
+			O3    float32 `json:"o3"`
+			So2   float32 `json:"so2"`
+			Pm2_5 float32 `json:"pm2_5"`
+			Pm10  float32 `json:"pm10"`
+			Defra float32 `json:"gb-defra-index"`
 		} `json:"air_quality"`
 	} `json:"current"`
 

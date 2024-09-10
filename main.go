@@ -73,8 +73,8 @@ func main() {
 	}
 	weather := fetchForecastWeather(settings.Query, settings.ApiKey)
 	printForecastWeather(weather)
-	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	// PrintCurrentWeather(weather2)
+	weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	PrintCurrentWeather(weather2)
 
 	Database(weather)
 
@@ -120,7 +120,7 @@ func printForecastWeather(weather Weather) {
 
 	location, current, hours := weather.Location, weather.Current, weather.Forecast.Forecastday[0].Hour
 
-	fmt.Printf("%s, %s: %.0fC, %s, Time is: %s\n",
+	fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
 		location.Name,
 		location.Country,
 		current.TemC,

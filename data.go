@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
+	//"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -12,14 +12,15 @@ func Database(weather Weather) {
 
 	var (
 		country    string  = weather.Location.Country
-		name       string  = weather.Location.Name
-		timeLocal  string  = weather.Location.TimeLocal
-		temp       float64 = weather.Current.TemC
-		windSpeed  float64 = weather.Current.WindSpeed
-		windDegree float64 = weather.Current.WindDegree
-		feelsLike  float64 = weather.Current.FeelsLike
-		windChill  float64 = weather.Current.WindChill
-		windChill  float64 = weather.Current.WindChill
+		city       string  = weather.Location.Name
+		timeLocal  int64   = weather.Location.TimeLocal
+		temp       float32 = weather.Current.TemC
+		humidity   int8    = weather.Current.Humidity
+		windSpeed  float32 = weather.Current.WindSpeed
+		windDegree float32 = weather.Current.WindDegree
+		feelsLike  float32 = weather.Current.FeelsLike
+		windChill  float32 = weather.Current.WindChill
+		uv         float32 = weather.Current.Uv
 	)
 
 	db, err := sql.Open("sqlite3", "./w.db")
@@ -27,28 +28,24 @@ func Database(weather Weather) {
 		panic(err)
 	}
 
-	statement, err := db.Prepare("CREATE TABLE IF NOT EXISTS weather (date INTEGER PRIMMARY KEY,country TEXT, name TEXT, temp FLOAT, windspeed, FLOAT)")
+	statement, err := db.Prepare(
+		"CREATE TABLE IF NOT EXISTS weather (timeLocal INTEGER PRIMARY KEY UNIQUE,city TEXT, country TEXT, temp FLOAT, humidity INTEGER, windSpeed FLOAT, windDegree FLOAT,feelsLike FLOAT,windChill FLOAT,uv FLOAT)")
 	if err != nil {
 		panic(err)
 	}
 	statement.Exec()
 
-	statement, err = db.Prepare("INSERT INTO weather (date,country,name,temp, windspeed) VALUES (?,?,?,?,?)")
+	statement, err = db.Prepare("INSERT INTO weather (timeLocal,city,country,temp, humidity, windSpeed, windDegree, feelsLike, windChill, uv) VALUES (?,?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err)
 	}
-	statement.Exec(1725554700, "Saudi Arabia", "Dammam", 35.2, 9.0)
+	statement.Exec(timeLocal, city, country, temp, humidity, windSpeed, windDegree, feelsLike, windChill, uv)
 
-	rows, _ := db.Query("SELECT date,country,name,temp, windspeed FROM weather")
-
-	var date int
-	//var country string
-	//var name string
-	//var temp float64
-	var windspeed float64
+	rows, _ := db.Query("SELECT timeLocal,city,country,temp, humidity FROM weather")
 
 	for rows.Next() {
-		rows.Scan(&date, &country, &name, &temp, &windspeed)
-		fmt.Println(strconv.Itoa(date)+" : "+country, name, temp, windspeed)
+		rows.Scan(&timeLocal, &city, &country, &temp, &humidity, &windSpeed, &windDegree, &feelsLike, &windChill, &uv)
+		fmt.Println(timeLocal, city, country, temp, humidity, windSpeed, windDegree, feelsLike, windChill, uv)
 	}
+	db.Close()
 }

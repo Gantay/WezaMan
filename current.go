@@ -64,7 +64,7 @@ func PrintCurrentWeather(weather Weather) {
 
 	location, current := weather.Location, weather.Current
 
-	fmt.Printf("%s, %s: %.0fC, %s, Time is: %s\n",
+	fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
 		location.Name,
 		location.Country,
 		current.TemC,
