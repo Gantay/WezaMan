@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
+	_ "time"
 )
 
 func SettingsPath(segments ...string) string {
@@ -118,7 +118,8 @@ func fetchForecastWeather(query string, apiKey string) Weather {
 
 func printForecastWeather(weather Weather) {
 
-	location, current, hours := weather.Location, weather.Current, weather.Forecast.Forecastday[0].Hour
+	//location, current, hours := weather.Location, weather.Current, weather.Forecast.Forecastday[0].Hour
+	location, current := weather.Location, weather.Current
 
 	fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
 		location.Name,
@@ -127,17 +128,17 @@ func printForecastWeather(weather Weather) {
 		current.Condition.Text,
 		location.TimeLocal,
 	)
-	for _, hour := range hours {
-		date := time.Unix(hour.TimeEpoch, 0)
+	// for _, hour := range hours {
+	// 	date := time.Unix(hour.TimeEpoch, 0)
 
-		fmt.Printf(
-			"%s - %.01fC, %.0f, %s\n",
-			date.Format("15:04"),
-			hour.TempC,
-			hour.ChanceOfRain,
-			hour.Condition.Text,
-		)
-	}
+	// 	fmt.Printf(
+	// 		"%s - %.01fC, %.0f, %s\n",
+	// 		date.Format("15:04"),
+	// 		hour.TempC,
+	// 		hour.ChanceOfRain,
+	// 		hour.Condition.Text,
+	// 	)
+	// }
 
 	// airQ := weather.Forecast.Forecastday[0].Hour[0].AirQuality
 
