@@ -8,16 +8,20 @@ type Weather struct {
 	} `json:"Location"`
 
 	Current struct {
-		TemC       float32 `json:"temp_c"`
-		Humidity   int8    `json:"humidity"`
-		WindSpeed  float32 `json:"wind_kph"`
-		WindDegree float32 `json:"wind_degree"`
-		FeelsLike  float32 `json:"feelslike_c"`
-		HeatIndex  float32 `json:"heatindex_c"`
-		WindChill  float32 `json:"windchill_c"`
-		Uv         float32 `json:"uv"`
-		DewPoint   float32 `json:"dewpoint_c"`
-		Condition  struct {
+		TimeOfUpdate int64   `json:"last_updated_epoch"`
+		TemC         float32 `json:"temp_c"`
+		Humidity     int8    `json:"humidity"`
+		WindSpeed    float32 `json:"wind_kph"`
+		Gust         float32 `json:"gust_kph"`
+		WindDegree   float32 `json:"wind_degree"`
+		FeelsLike    float32 `json:"feelslike_c"`
+		HeatIndex    float32 `json:"heatindex_c"`
+		WindChill    float32 `json:"windchill_c"`
+		Uv           float32 `json:"uv"`
+		DewPoint     float32 `json:"dewpoint_c"`
+		Visibility   float32 `json:"vis_km"`
+		//IsDay        bool    `json:"is_day"`
+		Condition struct {
 			Text string `json:"text"`
 			Code int16  `json:"code"`
 		} `json:"condition"`
