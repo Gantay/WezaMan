@@ -119,15 +119,15 @@ func fetchForecastWeather(query string, apiKey string) Weather {
 func printForecastWeather(weather Weather) {
 
 	//location, current, hours := weather.Location, weather.Current, weather.Forecast.Forecastday[0].Hour
-	location, current := weather.Location, weather.Current
+	// location, current := weather.Location, weather.Current
 
-	fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
-		location.Name,
-		location.Country,
-		current.TemC,
-		current.Condition.Text,
-		location.TimeLocal,
-	)
+	// fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
+	// 	location.Name,
+	// 	location.Country,
+	// 	current.TemC,
+	// 	current.Condition.Text,
+	// 	location.TimeLocal,
+	// )
 	// for _, hour := range hours {
 	// 	date := time.Unix(hour.TimeEpoch, 0)
 

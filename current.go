@@ -62,13 +62,13 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 
 func PrintCurrentWeather(weather Weather) {
 
-	location, current := weather.Location, weather.Current
+	// location, current := weather.Location, weather.Current
 
-	fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
-		location.Name,
-		location.Country,
-		current.TemC,
-		current.Condition.Text,
-		location.TimeLocal,
-	)
+	// fmt.Printf("%s, %s: %.0fC, %s, Time is: %d\n",
+	// 	location.Name,
+	// 	location.Country,
+	// 	current.TemC,
+	// 	current.Condition.Text,
+	// 	location.TimeLocal,
+	// )
 }

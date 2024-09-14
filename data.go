@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	_ "fmt"
 
 	//"strconv"
 
@@ -76,12 +76,12 @@ func Database(weather Weather) {
 	}
 	statement.Exec(time, co, no2, o3, so2, pm2_5, pm10, defra)
 
-	rows, _ := db.Query("SELECT time,city,country,temp, humidity FROM weather")
+	// rows, _ := db.Query("SELECT time,city,country,temp, humidity FROM weather")
 
-	for rows.Next() {
-		rows.Scan(&time, &city, &country, &temp, &humidity, &windSpeed, &windDegree, &feelsLike, &windChill, &uv)
-		fmt.Println(time, city, country, temp, humidity, windSpeed, windDegree, feelsLike, windChill, uv)
-	}
+	// for rows.Next() {
+	// 	rows.Scan(&time, &city, &country, &temp, &humidity, &windSpeed, &windDegree, &feelsLike, &windChill, &uv)
+	// 	fmt.Println(time, city, country, temp, humidity, windSpeed, windDegree, feelsLike, windChill, uv)
+	// }
 
 	db.Close()
 }
