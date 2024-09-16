@@ -45,16 +45,6 @@ func Tea() {
 		PaddingLeft(0).
 		Width(0)
 
-	// fmt.Println(icon.Render(`
-
-	//   \   /
-	//    .-.
-	// ― (   ) ―
-	//    ` + "`-’`" + `
-	//   /   \
-
-	// `))
-
 	var info = lipgloss.NewStyle().SetString("35C").
 		Bold(false).
 		Foreground(lipgloss.Color("#FAFAFA")).
@@ -73,8 +63,6 @@ func Tea() {
 		MarginLeft(0).
 		MarginBottom(0).
 		Width(10)
-
-	// fmt.Println(info.Render("35C"))
 
 	fmt.Println(lipgloss.JoinHorizontal(lipgloss.Center, icon.Render(), info.Render()))
 }
