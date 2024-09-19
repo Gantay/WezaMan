@@ -2,11 +2,18 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/charmbracelet/lipgloss"
+	"golang.org/x/term"
+	"os"
 )
 
 func Tea() {
+
+	width, _, err := term.GetSize(int(os.Stdout.Fd()))
+	if err != nil {
+		width = 80 // default to 80 if there's an error
+	}
+
 	var title = lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color("#FAFAFA")).
@@ -24,7 +31,7 @@ func Tea() {
 		MarginRight(2).
 		MarginLeft(2).
 		MarginBottom(1).
-		Width(100)
+		Width(width)
 
 	fmt.Println(title.Render("WazaMan"))
 

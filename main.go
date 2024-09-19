@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 	_ "time"
 )
 
@@ -71,12 +72,24 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-	weather := fetchForecastWeather(settings.Query, settings.ApiKey)
-	printForecastWeather(weather)
-	weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	PrintCurrentWeather(weather2)
+	ticker := time.NewTicker(10 * time.Second)
+	defer ticker.Stop()
 
-	Database(weather)
+	for {
+		select {
+		case t := <-ticker.C:
+			weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
+			PrintCurrentWeather(weather)
+			fmt.Println("tick ", t)
+			Database(weather)
+		}
+	}
+	// weather := fetchForecastWeather(settings.Query, settings.ApiKey)
+	// printForecastWeather(weather)
+	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	// PrintCurrentWeather(weather2)
+
+	// Database(weather)
 
 }
 
