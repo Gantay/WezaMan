@@ -72,18 +72,16 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(30 * time.Minute)
 	defer ticker.Stop()
 
-	for {
-		select {
-		case t := <-ticker.C:
-			weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
-			PrintCurrentWeather(weather)
-			fmt.Println("tick ", t)
-			Database(weather)
-		}
+	for t := range ticker.C {
+		weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
+		PrintCurrentWeather(weather)
+		fmt.Println("tick at: ", t)
+		Database(weather)
 	}
+
 	// weather := fetchForecastWeather(settings.Query, settings.ApiKey)
 	// printForecastWeather(weather)
 	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
