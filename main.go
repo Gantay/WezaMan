@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-	_ "time"
 )
 
 func SettingsPath(segments ...string) string {
@@ -18,6 +17,11 @@ func SettingsPath(segments ...string) string {
 	}
 	segments = append([]string{config, "WeatherMan"}, segments...)
 	return filepath.Join(segments...)
+}
+
+type Settings struct {
+	Query  string
+	ApiKey string
 }
 
 func (s *Settings) load() {
@@ -58,11 +62,6 @@ func (s *Settings) save() {
 
 }
 
-type Settings struct {
-	Query  string
-	ApiKey string
-}
-
 var settings = Settings{Query: "", ApiKey: ""}
 
 func main() {
@@ -72,20 +71,21 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-	ticker := time.NewTicker(30 * time.Minute)
+	ticker := time.NewTicker(10 * time.Minute)
 	defer ticker.Stop()
 
 	for t := range ticker.C {
 		weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
 		PrintCurrentWeather(weather)
-		fmt.Println("tick at: ", t)
+
+		fmt.Println("tick at: ", t.Format("15:04"))
 		Database(weather)
 	}
 
-	// weather := fetchForecastWeather(settings.Query, settings.ApiKey)
-	// printForecastWeather(weather)
-	// weather2 := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	// PrintCurrentWeather(weather2)
+	// foreCast := fetchForecastWeather(settings.Query, settings.ApiKey)
+	// printForecastWeather(foreCast)
+	// weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	// PrintCurrentWeather(weather)
 
 	// Database(weather)
 

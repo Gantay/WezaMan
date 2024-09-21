@@ -12,10 +12,13 @@ import (
 func Database(weather Weather) {
 
 	var (
-		country    string  = weather.Location.Country
-		city       string  = weather.Location.Name
-		localtime  int64   = weather.Location.TimeLocal
-		time       int64   = weather.Current.TimeOfUpdate
+		//Location And Time
+		country   string = weather.Location.Country
+		city      string = weather.Location.Name
+		localtime int64  = weather.Location.TimeLocal
+		time      int64  = weather.Current.TimeOfUpdate
+
+		//WeatherInfo
 		temp       float32 = weather.Current.TemC
 		code       int16   = weather.Current.Condition.Code
 		humidity   int8    = weather.Current.Humidity
