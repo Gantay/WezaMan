@@ -14,6 +14,7 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 
 	res, err := http.Get("http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + query + "&aqi=yes&alerts=yes")
 	if err != nil {
+		//bruh fix this!!!
 		fmt.Println("no connection to weather API retray in 5 seconeds")
 		time.Sleep(5 * time.Second)
 	}

@@ -71,6 +71,11 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
+
+	weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	PrintCurrentWeather(weather)
+	Database(weather)
+
 	ticker := time.NewTicker(10 * time.Minute)
 	defer ticker.Stop()
 
