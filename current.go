@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	_ "github.com/cenkalti/backoff/v4"
 	"io"
 	"net/http"
 	"os"
@@ -12,11 +13,25 @@ import (
 
 func FetchCurrentWeather(query string, apiKey string) Weather {
 
-	res, err := http.Get("http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + query + "&aqi=yes&alerts=yes")
+	weatherApi := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
+
+	maxRetries := 10
+	retryCount := 0
+	res, err := http.Get(weatherApi)
 	if err != nil {
-		//bruh fix this!!!
-		fmt.Println("no connection to weather API retray in 5 seconeds")
-		time.Sleep(5 * time.Second)
+		// panic(err)
+		for err != nil {
+			time.Sleep(10 * time.Second)
+			fmt.Println("no connection retry in 10 seconds.")
+			res, err = http.Get(weatherApi)
+
+			retryCount++
+			if retryCount >= maxRetries {
+				fmt.Println("Max retries reached. Exiting.")
+				break
+			}
+
+		}
 	}
 	defer res.Body.Close()
 
