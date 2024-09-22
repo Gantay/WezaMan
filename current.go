@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	_ "github.com/cenkalti/backoff/v4"
 	"io"
 	"net/http"
 	"os"
@@ -15,20 +14,21 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 
 	weatherApi := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
+	//is retryCount being reset to 0 after the loop is broken??????????
 	maxRetries := 10
 	retryCount := 0
 	res, err := http.Get(weatherApi)
 	if err != nil {
 		// panic(err)
 		for err != nil {
-			time.Sleep(10 * time.Second)
 			fmt.Println("no connection retry in 10 seconds.")
+			time.Sleep(10 * time.Second)
 			res, err = http.Get(weatherApi)
 
 			retryCount++
 			if retryCount >= maxRetries {
-				fmt.Println("Max retries reached. Exiting.")
-				break
+				fmt.Println("Max retrys reached. Exiting.")
+				panic(err)
 			}
 
 		}
