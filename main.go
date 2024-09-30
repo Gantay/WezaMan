@@ -75,7 +75,6 @@ func main() {
 	weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
 	PrintCurrentWeather(weather)
 	Database(weather)
-	fmt.Println("post FetchCurrentWeather func")
 
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()

@@ -14,10 +14,10 @@ func Database(weather Weather) {
 
 	var (
 		//Location And Time
-		country   string = weather.Location.Country
-		city      string = weather.Location.Name
-		localtime int64  = weather.Location.TimeLocal
-		time      int64  = weather.Current.TimeOfUpdate
+		country    string = weather.Location.Country
+		city       string = weather.Location.Name
+		localtime  int64  = weather.Location.TimeLocal
+		timeOfData int64  = weather.Current.TimeOfUpdate
 
 		//WeatherInfo
 		temp       float32 = weather.Current.TemC
@@ -40,7 +40,7 @@ func Database(weather Weather) {
 		so2   float32 = weather.Current.AirQuality.So2
 		pm2_5 float32 = weather.Current.AirQuality.Pm2_5
 		pm10  float32 = weather.Current.AirQuality.Pm10
-		defra float32 = weather.Current.AirQuality.Defra
+		aqi   int8    = weather.Current.AirQuality.AQI
 	)
 
 	//this should work :)
@@ -56,14 +56,14 @@ func Database(weather Weather) {
 	}
 
 	statement, err := db.Prepare(
-		"CREATE TABLE IF NOT EXISTS weather (time INTEGER PRIMARY KEY UNIQUE,localtime INTEGER,city TEXT, country TEXT, temp REAL,code INTEGER, humidity INTEGER, dewPoint REAL, windSpeed REAL, windDegree REAL,gust REAL, feelsLike REAL,heatIndex REAL, windChill REAL,visibility INTEGER,uv REAL)")
+		"CREATE TABLE IF NOT EXISTS weather (timeOfData INTEGER PRIMARY KEY UNIQUE,localtime INTEGER,city TEXT, country TEXT, temp REAL,code INTEGER, humidity INTEGER, dewPoint REAL, windSpeed REAL, windDegree REAL,gust REAL, feelsLike REAL,heatIndex REAL, windChill REAL,visibility INTEGER,uv REAL)")
 	if err != nil {
 		panic(err)
 	}
 	statement.Exec()
 
 	statement, err = db.Prepare(
-		"CREATE TABLE IF NOT EXISTS airquality (time INTEGER PRIMARY KEY UNIQUE,co REAL, no2 REAL, o3 REAL, so2 REAL, pm2_5 REAL, pm10 REAL, defra REAL)")
+		"CREATE TABLE IF NOT EXISTS airquality (timeOfData INTEGER PRIMARY KEY UNIQUE,co REAL, no2 REAL, o3 REAL, so2 REAL, pm2_5 REAL, pm10 REAL, aqi INTEGER)")
 	if err != nil {
 		panic(err)
 	}
@@ -75,17 +75,17 @@ func Database(weather Weather) {
 	// 	statement.Exec(createAirQualityTableSQL)
 	// }
 
-	statement, err = db.Prepare("INSERT INTO weather (time, localtime, city, country, temp,code, humidity,dewPoint, windSpeed, windDegree,gust, feelsLike,heatIndex, windChill,visibility, uv) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+	statement, err = db.Prepare("INSERT INTO weather (timeOfData, localtime, city, country, temp,code, humidity,dewPoint, windSpeed, windDegree,gust, feelsLike,heatIndex, windChill,visibility, uv) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err)
 	}
-	statement.Exec(time, localtime, city, country, temp, code, humidity, dewPoint, windSpeed, windDegree, gust, feelsLike, heatIndex, windChill, visibility, uv)
+	statement.Exec(timeOfData, localtime, city, country, temp, code, humidity, dewPoint, windSpeed, windDegree, gust, feelsLike, heatIndex, windChill, visibility, uv)
 
-	statement, err = db.Prepare("INSERT INTO airquality (time,co, no2, o3, so2, pm2_5, pm10, defra) VALUES (?,?,?,?,?,?,?,?)")
+	statement, err = db.Prepare("INSERT INTO airquality (timeOfData,co, no2, o3, so2, pm2_5, pm10, aqi) VALUES (?,?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err)
 	}
-	statement.Exec(time, co, no2, o3, so2, pm2_5, pm10, defra)
+	statement.Exec(timeOfData, co, no2, o3, so2, pm2_5, pm10, aqi)
 
 	// rows, _ := db.Query("SELECT time,city,country,temp, humidity FROM weather")
 

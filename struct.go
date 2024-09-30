@@ -32,7 +32,7 @@ type Weather struct {
 			So2   float32 `json:"so2"`
 			Pm2_5 float32 `json:"pm2_5"`
 			Pm10  float32 `json:"pm10"`
-			Defra float32 `json:"gb-defra-index"`
+			AQI   int8    `json:"us-epa-index"`
 		} `json:"air_quality"`
 	} `json:"current"`
 
