@@ -21,7 +21,7 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	if err != nil {
 		// panic(err)
 		for err != nil {
-			fmt.Println("no connection retry in 10 seconds.")
+			fmt.Println("no connection retry in 10 seconds.", retryCount)
 			time.Sleep(10 * time.Second)
 			res, err = http.Get(weatherApi)
 

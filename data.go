@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
-	_ "fmt"
-
+	"fmt"
+	"os"
+	"path/filepath"
 	//"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -42,7 +43,14 @@ func Database(weather Weather) {
 		defra float32 = weather.Current.AirQuality.Defra
 	)
 
-	db, err := sql.Open("sqlite3", "./w.db")
+	//this should work :)
+	config, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+	data := fmt.Sprint(filepath.Join(config, "WeatherMan", "Weather.db"))
+
+	db, err := sql.Open("sqlite3", data)
 	if err != nil {
 		panic(err)
 	}
