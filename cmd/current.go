@@ -12,7 +12,7 @@ import (
 
 func FetchCurrentWeather(query string, apiKey string) Weather {
 
-	weatherApi := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
+	weatherApi := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
 	//is retryCount being reset to 0 after the loop is broken??????????
 	maxRetries := 10

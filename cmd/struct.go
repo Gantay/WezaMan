@@ -20,8 +20,8 @@ type Weather struct {
 		Uv           float32 `json:"uv"`
 		DewPoint     float32 `json:"dewpoint_c"`
 		Visibility   float32 `json:"vis_km"`
-		//IsDay        bool    `json:"is_day"`
-		Condition struct {
+		IsDay        int8    `json:"is_day"`
+		Condition    struct {
 			Text string `json:"text"`
 			Code int16  `json:"code"`
 		} `json:"condition"`

@@ -23,6 +23,35 @@ type Settings struct {
 	ApiKey string
 }
 
+func (s *Settings) init() {
+	config, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Print("API key: ")
+	fmt.Scan(&s.ApiKey)
+
+	fmt.Print("Your Location: ")
+	fmt.Scan(&s.Query)
+
+	data, err := json.Marshal(s)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.MkdirAll(filepath.Join(config, "WeatherMan"), 0700)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(filepath.Join(config, "WeatherMan", "Setting.json"), data, 0700)
+	if err != nil {
+		panic(err)
+	}
+
+}
+
 func (s *Settings) load() {
 	config, err := os.UserConfigDir()
 	if err != nil {
@@ -31,7 +60,8 @@ func (s *Settings) load() {
 
 	data, err := os.ReadFile(filepath.Join(config, "WeatherMan", "Setting.json"))
 	if err != nil {
-		fmt.Println("No Setting Loaded...")
+		fmt.Println("No Setting Found...")
+		s.init()
 		return
 	}
 
@@ -50,10 +80,7 @@ func (s *Settings) save() {
 	if err != nil {
 		panic(err)
 	}
-	err = os.MkdirAll(filepath.Join(config, "WeatherMan"), 0700)
-	if err != nil {
-		panic(err)
-	}
+
 	err = os.WriteFile(filepath.Join(config, "WeatherMan", "Setting.json"), data, 0600)
 	if err != nil {
 		panic(err)
@@ -65,6 +92,7 @@ var settings = Settings{Query: "", ApiKey: ""}
 
 func main() {
 	fmt.Println("it's runing")
+
 	settings.load()
 
 	if len(os.Args) >= 2 {
@@ -76,7 +104,7 @@ func main() {
 	PrintCurrentWeather(weather)
 	Database(weather)
 
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(15 * time.Minute)
 	defer ticker.Stop()
 
 	for t := range ticker.C {
@@ -86,12 +114,4 @@ func main() {
 		fmt.Println("tick at: ", t.Format("15:04"))
 		Database(weather)
 	}
-
-	// foreCast := fetchForecastWeather(settings.Query, settings.ApiKey)
-	// printForecastWeather(foreCast)
-	// weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	// PrintCurrentWeather(weather)
-
-	// Database(weather)
-
 }
