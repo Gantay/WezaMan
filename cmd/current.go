@@ -15,32 +15,28 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	weatherApi := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
 	//is retryCount being reset to 0 after the loop is broken??????????
-	maxRetries := 10
-	retryCount := 0
-	resp, err := http.Get(weatherApi)
-	if err != nil && resp.StatusCode == 200 {
-		for resp.StatusCode != 200 {
+	var (
+		resp            *http.Response
+		err             error
+		maxRetries      = 10
+		currentRretries = 0
+	)
 
-			switch resp.StatusCode {
-			case 404:
-				fmt.Printf("400 Bad Request. retry in 10 seconds. counter:%d", retryCount)
-			case 505:
-				fmt.Printf("503 Service Unavailable. retry in 10 seconds. counter:%d", retryCount)
-			default:
-				fmt.Printf("Error code %d. retry in 10 seconds. counter:%d", resp.StatusCode, retryCount)
-
-			}
+	for currentRretries >= maxRetries {
+		resp, err := http.Get(weatherApi)
+		if err != nil {
+			fmt.Printf("Request faild: %q", err)
+			currentRretries++
 			time.Sleep(10 * time.Second)
-			resp, err = http.Get(weatherApi)
-
-			retryCount++
-			if retryCount >= maxRetries {
-				fmt.Println("Max retrys reached. Exiting.")
-				panic(err)
-			}
-
+			continue
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			break
+		}
+
 	}
+
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
