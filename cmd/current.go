@@ -17,13 +17,21 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	//is retryCount being reset to 0 after the loop is broken??????????
 	maxRetries := 10
 	retryCount := 0
-	res, err := http.Get(weatherApi)
-	if err != nil {
-		// panic(err)
-		for err != nil {
-			fmt.Println("no connection retry in 10 seconds.", retryCount)
+	resp, err := http.Get(weatherApi)
+	if err != nil && resp.StatusCode == 200 {
+		for resp.StatusCode != 200 {
+
+			switch resp.StatusCode {
+			case 404:
+				fmt.Printf("400 Bad Request. retry in 10 seconds. counter:%d", retryCount)
+			case 505:
+				fmt.Printf("503 Service Unavailable. retry in 10 seconds. counter:%d", retryCount)
+			default:
+				fmt.Printf("Error code %d. retry in 10 seconds. counter:%d", resp.StatusCode, retryCount)
+
+			}
 			time.Sleep(10 * time.Second)
-			res, err = http.Get(weatherApi)
+			resp, err = http.Get(weatherApi)
 
 			retryCount++
 			if retryCount >= maxRetries {
@@ -33,13 +41,9 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 
 		}
 	}
-	defer res.Body.Close()
+	defer resp.Body.Close()
 
-	if res.StatusCode != 200 {
-		panic("Weather api not available")
-	}
-
-	body, err := io.ReadAll(res.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
 	}
@@ -82,11 +86,12 @@ func PrintCurrentWeather(weather Weather) {
 	time := time.Unix(weather.Current.TimeOfUpdate, 0)
 	ftime := time.Format("15:04")
 
-	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"AQI: %d, "+"TimeOfUpdate: %s \n",
+	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"UV: %0.f, "+"AQI: %d, "+"TimeOfUpdate: %s \n",
 		weather.Location.Name,
 		weather.Current.TemC,
 		weather.Current.Humidity,
 		weather.Current.FeelsLike,
+		weather.Current.Uv,
 		weather.Current.AirQuality.AQI,
 		ftime,
 	)

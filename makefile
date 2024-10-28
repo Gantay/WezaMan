@@ -9,6 +9,10 @@ MAIN_PKG=./cmd
 # Go flags (you can set specific Go build flags here)
 GO_FLAGS=
 
+# Cross-compilation targets
+OS ?= linux
+ARCH ?= amd64
+
 # Default target: build the project
 .PHONY: all
 all: build
@@ -17,6 +21,13 @@ all: build
 .PHONY: build
 build:
 	go build $(GO_FLAGS) -o ./bin/$(BINARY_NAME) $(MAIN_PKG)
+
+# Build for a specific OS/ARCH (cross-compilation)
+.PHONY: build-cross
+build-cross:
+	GOOS=$(OS) GOARCH=$(ARCH) go build $(GO_FLAGS) -o ./bin/$(BINARY_NAME)-$(OS)-$(ARCH) $(MAIN_PKG)
+
+
 
 # Run the Go project
 .PHONY: run
@@ -47,6 +58,12 @@ fmt:
 .PHONY: vendor
 vendor:
 	go mod vendor
+	
+# Check for dependency updates using `go get -u` and update them
+.PHONY: update-deps
+update-deps:
+	go get -u ./...
+	go mod tidy
 
 # Tidy up the go.mod file
 .PHONY: tidy

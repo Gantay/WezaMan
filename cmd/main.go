@@ -1,9 +1,9 @@
 package main
 
 import (
+	_ "Gantay/weather/tui"
 	"encoding/json"
 	"fmt"
-
 	"os"
 	"path/filepath"
 	"time"
@@ -91,18 +91,16 @@ func (s *Settings) save() {
 var settings = Settings{Query: "", ApiKey: ""}
 
 func main() {
-	fmt.Println("it's runing")
-
 	settings.load()
-
+	// tui.Tea()
 	if len(os.Args) >= 2 {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-
+	FetchCurrentWeather(settings.Query, settings.ApiKey)
 	weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
 	PrintCurrentWeather(weather)
-	Database(weather)
+	//Database(weather)
 
 	ticker := time.NewTicker(15 * time.Minute)
 	defer ticker.Stop()
@@ -112,6 +110,6 @@ func main() {
 		PrintCurrentWeather(weather)
 
 		fmt.Println("tick at: ", t.Format("15:04"))
-		Database(weather)
+		//Database(weather)
 	}
 }

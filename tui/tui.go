@@ -1,4 +1,4 @@
-package main
+package tui
 
 import (
 	"fmt"
@@ -33,7 +33,7 @@ func Tea() {
 		MarginBottom(1).
 		Width(width)
 
-	fmt.Println(title.Render("WazaMan"))
+	fmt.Println(title.Render("Weather"))
 
 	var icon = lipgloss.NewStyle().SetString(`
  
