@@ -16,13 +16,15 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 
 	//is retryCount being reset to 0 after the loop is broken??????????
 	var (
-		resp            *http.Response
+		// Pointer no good fam!!! LOCK IN!!!!!!
+		//bro how the hell do i fix this?!?!?!?!?!?
+		resp            http.Response
 		err             error
 		maxRetries      = 10
 		currentRretries = 0
 	)
 
-	for currentRretries >= maxRetries {
+	for currentRretries < maxRetries {
 		resp, err := http.Get(weatherApi)
 		if err != nil {
 			fmt.Printf("Request faild: %q", err)
@@ -82,13 +84,14 @@ func PrintCurrentWeather(weather Weather) {
 	time := time.Unix(weather.Current.TimeOfUpdate, 0)
 	ftime := time.Format("15:04")
 
-	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"UV: %0.f, "+"AQI: %d, "+"TimeOfUpdate: %s \n",
+	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"UV: %0.f, "+"AQI: %d,Rain: %0.fmm, "+"TimeOfUpdate: %s \n",
 		weather.Location.Name,
 		weather.Current.TemC,
 		weather.Current.Humidity,
 		weather.Current.FeelsLike,
 		weather.Current.Uv,
 		weather.Current.AirQuality.AQI,
+		weather.Current.Rain,
 		ftime,
 	)
 }
