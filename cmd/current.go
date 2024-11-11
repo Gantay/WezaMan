@@ -18,25 +18,32 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	var (
 		// Pointer no good fam!!! LOCK IN!!!!!!
 		//bro how the hell do i fix this?!?!?!?!?!?
-		resp            http.Response
+		// resp            http.Response
 		err             error
 		maxRetries      = 10
 		currentRretries = 0
 	)
 
-	for currentRretries < maxRetries {
-		resp, err := http.Get(weatherApi)
-		if err != nil {
-			fmt.Printf("Request faild: %q", err)
-			currentRretries++
-			time.Sleep(10 * time.Second)
-			continue
-		}
+	resp, err := http.Get(weatherApi)
+	if err != nil {
+		fmt.Printf("no bueno: %s", err)
+	}
 
-		if resp.StatusCode == http.StatusOK {
-			break
-		}
+	if resp.StatusCode != 200 {
+		for currentRretries <= maxRetries {
+			resp, err := http.Get(weatherApi)
+			if err != nil {
+				fmt.Printf("Request faild: %q", err)
+				currentRretries++
+				time.Sleep(5 * time.Second)
+				continue
+			}
 
+			if resp.StatusCode == http.StatusOK {
+				break
+			}
+
+		}
 	}
 
 	defer resp.Body.Close()
