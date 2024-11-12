@@ -15,15 +15,14 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 	weatherApi := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
 	//is retryCount being reset to 0 after the loop is broken??????????
+	//
 	var (
-		// Pointer no good fam!!! LOCK IN!!!!!!
-		//bro how the hell do i fix this?!?!?!?!?!?
-		// resp            http.Response
-		err             error
+		// err             error
 		maxRetries      = 10
 		currentRretries = 0
 	)
 
+	//still not stable
 	resp, err := http.Get(weatherApi)
 	if err != nil {
 		fmt.Printf("no bueno: %s", err)
