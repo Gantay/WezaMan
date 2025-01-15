@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
+	_ "time"
 )
 
 func SettingsPath(segments ...string) string {
@@ -97,19 +97,25 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
-	FetchCurrentWeather(settings.Query, settings.ApiKey)
-	weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	//FetchCurrentWeather(settings.Query, settings.ApiKey)
+	weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	if err != nil {
+		fmt.Printf("Error %v", err)
+	}
 	PrintCurrentWeather(weather)
 	//Database(weather)
 
-	ticker := time.NewTicker(15 * time.Minute)
-	defer ticker.Stop()
+	// ticker := time.NewTicker(2 * time.Minute)
+	// defer ticker.Stop()
 
-	for t := range ticker.C {
-		weather := FetchCurrentWeather(settings.Query, settings.ApiKey)
-		PrintCurrentWeather(weather)
+	// for t := range ticker.C {
+	// 	weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	// 	if err != nil {
+	// 		fmt.Printf("Error %v", err)
+	// 	}
+	// 	PrintCurrentWeather(weather)
 
-		fmt.Println("tick at: ", t.Format("15:04"))
-		//Database(weather)
-	}
+	// 	fmt.Println("tick at: ", t.Format("15:04"))
+	// 	//Database(weather)
+	// }
 }

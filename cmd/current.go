@@ -10,42 +10,64 @@ import (
 	"time"
 )
 
-func FetchCurrentWeather(query string, apiKey string) Weather {
+func FetchCurrentWeather(query string, apiKey string) (*Weather, error) {
 
-	weatherApi := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
+	request := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
 	//is retryCount being reset to 0 after the loop is broken??????????
 	//
 	var (
-		// err             error
-		maxRetries      = 10
-		currentRretries = 0
+		resp *http.Response
+		err  error
 	)
 
 	//still not stable
-	resp, err := http.Get(weatherApi)
-	if err != nil {
-		fmt.Printf("no bueno: %s", err)
-	}
+	// resp, err := http.Get(request)
+	// if err != nil {
+	// 	fmt.Printf("no bueno: %s", err)
+	// }
 
-	if resp.StatusCode != 200 {
-		for currentRretries <= maxRetries {
-			resp, err := http.Get(weatherApi)
-			if err != nil {
-				fmt.Printf("Request faild: %q", err)
-				currentRretries++
-				time.Sleep(5 * time.Second)
-				continue
-			}
-
-			if resp.StatusCode == http.StatusOK {
-				break
-			}
-
+	for retries := 0; retries < 10; retries++ {
+		resp, err := http.Get(request)
+		if err != nil {
+			fmt.Printf("HTTP request failed: %v. Retrying...\n", err)
+			time.Sleep(5 * time.Second)
+			continue
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			break
+		}
+
+		fmt.Printf("Unexpected status code: %d. Retrying...\n", resp.StatusCode)
+		resp.Body.Close() // Avoid leaking resources
+		time.Sleep(5 * time.Second)
+
 	}
 
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch weather data after retries: %v", err)
+	}
 	defer resp.Body.Close()
+
+	// if resp.StatusCode != 200 {
+	// 	for currentRretries <= maxRetries {
+	// 		resp, err := http.Get(request)
+	// 		if err != nil {
+	// 			fmt.Printf("Request faild: %q", err)
+	// 			currentRretries++
+	// 			time.Sleep(5 * time.Second)
+	// 			continue
+	// 		}
+
+	// 		if resp.StatusCode == http.StatusOK {
+	// 			break
+	// 		}
+
+	// 	}
+	// }
+
+	// defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -82,7 +104,7 @@ func FetchCurrentWeather(query string, apiKey string) Weather {
 		panic(err)
 	}
 
-	return weather
+	return &weather, nil
 }
 
 func PrintCurrentWeather(weather Weather) {
