@@ -37,14 +37,15 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 
 	}
 
-	if err != nil {
+	if resp == nil {
 		return nil, fmt.Errorf("failed to fetch weather data after retries: %v", err)
 	}
+
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	// gotWeather := &Weather

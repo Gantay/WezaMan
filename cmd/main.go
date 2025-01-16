@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
 	_ "time"
 )
 
@@ -97,6 +98,22 @@ func main() {
 		settings.Query = os.Args[1]
 		settings.save()
 	}
+
+	raw, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	if err != nil {
+		fmt.Printf("Error fetching weather data: %v\n", err)
+		return
+	}
+
+	var currentWeather Weather
+
+	err = currentWeather.UpdateWeather(raw)
+	if err != nil {
+		fmt.Printf("Error updating weather: %v\n", err)
+		return
+	}
+	currentWeather.PrintWeather()
+
 	//FetchCurrentWeather(settings.Query, settings.ApiKey)
 	// weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
 	// if err != nil {
