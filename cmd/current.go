@@ -19,14 +19,8 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 		err  error
 	)
 
-	//still not stable
-	// resp, err := http.Get(request)
-	// if err != nil {
-	// 	fmt.Printf("no bueno: %s", err)
-	// }
-
 	for retries := 0; retries < 10; retries++ {
-		resp, err := http.Get(request)
+		resp, err = http.Get(request)
 		if err != nil {
 			fmt.Printf("HTTP request failed: %v. Retrying...\n", err)
 			time.Sleep(5 * time.Second)
@@ -47,25 +41,6 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 		return nil, fmt.Errorf("failed to fetch weather data after retries: %v", err)
 	}
 	defer resp.Body.Close()
-
-	// if resp.StatusCode != 200 {
-	// 	for currentRretries <= maxRetries {
-	// 		resp, err := http.Get(request)
-	// 		if err != nil {
-	// 			fmt.Printf("Request faild: %q", err)
-	// 			currentRretries++
-	// 			time.Sleep(5 * time.Second)
-	// 			continue
-	// 		}
-
-	// 		if resp.StatusCode == http.StatusOK {
-	// 			break
-	// 		}
-
-	// 	}
-	// }
-
-	// defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

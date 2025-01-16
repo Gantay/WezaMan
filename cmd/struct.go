@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 func (w *Weather) UpdateWeather(body []byte) error {
@@ -15,7 +16,22 @@ func (w *Weather) UpdateWeather(body []byte) error {
 	return nil
 }
 
-// func (w *Weather) PrintWeather(body []byte) error {}
+func (w *Weather) PrintWeather() {
+
+	time := time.Unix(w.Current.TimeOfUpdate, 0)
+	ftime := time.Format("15:04")
+
+	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"UV: %0.f, "+"AQI: %d,Rain: %0.fmm, "+"TimeOfUpdate: %s \n",
+		w.Location.Name,
+		w.Current.TemC,
+		w.Current.Humidity,
+		w.Current.FeelsLike,
+		w.Current.Uv,
+		w.Current.AirQuality.AQI,
+		w.Current.Rain,
+		ftime,
+	)
+}
 
 type Weather struct {
 	Location struct {

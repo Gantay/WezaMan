@@ -98,11 +98,11 @@ func main() {
 		settings.save()
 	}
 	//FetchCurrentWeather(settings.Query, settings.ApiKey)
-	weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	if err != nil {
-		fmt.Printf("Error %v", err)
-	}
-	PrintCurrentWeather(weather)
+	// weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	// if err != nil {
+	// 	fmt.Printf("Error %v", err)
+	// }
+	// PrintCurrentWeather(weather)
 
 	//Database(weather)
 
