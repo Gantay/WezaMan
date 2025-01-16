@@ -1,21 +1,19 @@
 package main
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"os"
-	"path/filepath"
+	// "os"
+	// "path/filepath"
 	"time"
 )
 
-func FetchCurrentWeather(query string, apiKey string) (*Weather, error) {
+func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 
 	request := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes&alerts=yes", apiKey, query)
 
-	//is retryCount being reset to 0 after the loop is broken??????????
-	//
 	var (
 		resp *http.Response
 		err  error
@@ -74,37 +72,37 @@ func FetchCurrentWeather(query string, apiKey string) (*Weather, error) {
 		panic(err)
 	}
 
-	var weather Weather
-	err = json.Unmarshal(body, &weather)
-	if err != nil {
-		panic(err)
-	}
+	// gotWeather := &Weather
+	// err = json.Unmarshal(body, &gotWeather)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	currentTime := time.Now()
-	timeString := currentTime.Format("2006-01-02:_15_")
-	fileName := fmt.Sprintf("%s.json", timeString)
+	// currentTime := time.Now()
+	// timeString := currentTime.Format("2006-01-02:_15_")
+	// fileName := fmt.Sprintf("%s.json", timeString)
 
-	config, err := os.UserConfigDir()
-	if err != nil {
-		panic(err)
-	}
+	// config, err := os.UserConfigDir()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	var bodyFormated interface{}
-	err = json.Unmarshal(body, &bodyFormated)
-	if err != nil {
-		panic(err)
-	}
-	formattedJSON, err := json.MarshalIndent(bodyFormated, "", " ")
-	if err != nil {
-		panic(err)
-	}
+	// var bodyFormated interface{}
+	// err = json.Unmarshal(body, &bodyFormated)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// formattedJSON, err := json.MarshalIndent(bodyFormated, "", " ")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), formattedJSON, 0740)
-	if err != nil {
-		panic(err)
-	}
+	// err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), formattedJSON, 0740)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	return &weather, nil
+	return body, nil
 }
 
 func PrintCurrentWeather(weather Weather) {

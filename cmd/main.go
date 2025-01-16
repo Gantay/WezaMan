@@ -103,6 +103,7 @@ func main() {
 		fmt.Printf("Error %v", err)
 	}
 	PrintCurrentWeather(weather)
+
 	//Database(weather)
 
 	// ticker := time.NewTicker(2 * time.Minute)

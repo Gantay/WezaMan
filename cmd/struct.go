@@ -1,5 +1,22 @@
 package main
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+func (w *Weather) UpdateWeather(body []byte) error {
+
+	err := json.Unmarshal(body, w)
+	if err != nil {
+		return fmt.Errorf("can't Unmarshal: %w", err)
+	}
+
+	return nil
+}
+
+// func (w *Weather) PrintWeather(body []byte) error {}
+
 type Weather struct {
 	Location struct {
 		Name      string `json:"name"`
