@@ -12,26 +12,29 @@ var settings = Settings{Query: "", ApiKey: ""}
 // var opt = [2]string{"help", "v"}
 
 func main() {
-	//Load settings if not init.
+	//Load settings if not then init.
 	settings.load()
-	//TODO: add help, edit conf, version print.
-	// if len(os.Args) >= 2 {
-	// 	settings.Query = os.Args[1]
-	// 	settings.save()
-	// }
-	// USE case/switch
-	if len(os.Args) >= 2 {
-		for _, v := range os.Args {
-			if v == "help" {
-				fmt.Println("HELP ME DOWG!!!")
-				os.Exit(0)
-			} else if v == "v" {
-				fmt.Println("version: 0.1 beta")
-				os.Exit(0)
-			}
 
+	switch {
+	case os.Args[1] == "-h", os.Args[1] == "-help":
+		fmt.Println("HELP ME DOWG!!!")
+		os.Exit(0)
+	case os.Args[1] == "-version", os.Args[1] == "-v":
+		fmt.Println("version: 0.1 beta")
+		os.Exit(0)
+	case os.Args[1] == "-location", os.Args[1] == "-l":
+		if len(os.Args) <= 2 {
+			fmt.Println("no location bud, LOCK IN!!!")
+			os.Exit(0)
 		}
+		settings.Query = os.Args[2]
+		fmt.Printf("location Updated to [%s].\n", os.Args[2])
+	case os.Args[1] == "env":
+		fmt.Println("")
 
+	default:
+		fmt.Println("Unknow command")
+		os.Exit(0)
 	}
 
 	raw, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
@@ -48,7 +51,6 @@ func main() {
 		return
 	}
 	currentWeather.PrintWeather()
-	currentWeather.JsonWeather(raw)
 
 	// ticker := time.NewTicker(2 * time.Minute)
 	// defer ticker.Stop()

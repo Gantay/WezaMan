@@ -94,7 +94,7 @@ func (s *Settings) save() {
 
 }
 
-// clean this up bud!!!
+// clean this up, bud!!!
 func Database(weather Weather) {
 
 	var (
