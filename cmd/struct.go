@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -31,6 +33,26 @@ func (w *Weather) PrintWeather() {
 		w.Current.Rain,
 		ftime,
 	)
+}
+
+// TODO: complete this and move it to data.go!!!
+func (w *Weather) SQLWeather() {}
+
+func (w *Weather) JsonWeather(raw []byte) {
+	currentTime := time.Now()
+	fileName := fmt.Sprintf("%s.json", currentTime.Format("2006-01-02__15:00"))
+
+	//Get rid of this
+	config, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), raw, 0740)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 type Weather struct {

@@ -32,6 +32,7 @@ func main() {
 		return
 	}
 	currentWeather.PrintWeather()
+	currentWeather.JsonWeather(raw)
 
 	// ticker := time.NewTicker(2 * time.Minute)
 	// defer ticker.Stop()
