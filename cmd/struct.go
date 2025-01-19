@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
+
 	"time"
 )
 
@@ -42,16 +42,21 @@ func (w *Weather) JsonWeather(raw []byte) {
 	currentTime := time.Now()
 	fileName := fmt.Sprintf("%s.json", currentTime.Format("2006-01-02__15:00"))
 
-	//Get rid of this
-	config, err := os.UserConfigDir()
+	//Get rid of this!!!
+	// config, err := os.UserConfigDir()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	err := os.WriteFile(fileName, raw, 0740)
 	if err != nil {
 		panic(err)
 	}
 
-	err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), raw, 0740)
-	if err != nil {
-		panic(err)
-	}
+	// err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), raw, 0740)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 }
 
