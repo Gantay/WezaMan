@@ -23,6 +23,7 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 		resp, err = http.Get(request)
 		if err != nil {
 			fmt.Printf("HTTP request failed: %v. Retrying...\n", err)
+			//TODO: Should Multiply by the n of retries
 			time.Sleep(5 * time.Second)
 			continue
 		}
@@ -33,6 +34,7 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 
 		fmt.Printf("Unexpected status code: %d. Retrying...\n", resp.StatusCode)
 		resp.Body.Close() // Avoid leaking resources
+		//TODO: Should Multiply by the n of retries
 		time.Sleep(5 * time.Second)
 
 	}
