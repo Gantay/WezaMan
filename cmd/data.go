@@ -20,9 +20,9 @@ func SettingsPath(segments ...string) string {
 }
 
 type Settings struct {
-	Api    string
-	Query  string
-	ApiKey string
+	Api      string
+	Location string
+	ApiKey   string
 }
 
 func (s *Settings) init() {
@@ -36,7 +36,7 @@ func (s *Settings) init() {
 	fmt.Scan(&s.Api)
 
 	fmt.Print("Your Location: ")
-	fmt.Scan(&s.Query)
+	fmt.Scan(&s.Location)
 
 	fmt.Print("API key: ")
 	fmt.Scan(&s.ApiKey)
@@ -91,6 +91,13 @@ func (s *Settings) save() {
 	if err != nil {
 		panic(err)
 	}
+
+}
+
+func (s *Settings) print() {
+	fmt.Printf("Weather API service: %s\n", s.Api)
+	fmt.Printf("Weather API ApiKey:  %s\n", s.ApiKey)
+	fmt.Printf("Weather API Query:   %s\n", s.Location)
 
 }
 

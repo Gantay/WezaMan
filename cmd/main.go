@@ -4,40 +4,42 @@ import (
 	_ "Gantay/weather/tui"
 	"fmt"
 	"os"
+	"time"
 	_ "time"
 )
 
-var settings = Settings{Query: "", ApiKey: ""}
-
-// var opt = [2]string{"help", "v"}
+var settings = Settings{Location: "", ApiKey: ""}
 
 func main() {
 	//Load settings if not then init.
 	settings.load()
 
 	switch {
+	case len(os.Args) <= 1:
+		break
 	case os.Args[1] == "-h", os.Args[1] == "-help":
 		fmt.Println("HELP ME DOWG!!!")
 		os.Exit(0)
 	case os.Args[1] == "-version", os.Args[1] == "-v":
-		fmt.Println("version: 0.1 beta")
+		fmt.Println("version: beta")
 		os.Exit(0)
 	case os.Args[1] == "-location", os.Args[1] == "-l":
 		if len(os.Args) <= 2 {
 			fmt.Println("no location bud, LOCK IN!!!")
-			os.Exit(0)
+			os.Exit(1)
 		}
-		settings.Query = os.Args[2]
+		settings.Location = os.Args[2]
 		fmt.Printf("location Updated to [%s].\n", os.Args[2])
-	case os.Args[1] == "env":
-		fmt.Println("")
+	case os.Args[1] == "-env":
+		settings.print()
+		os.Exit(0)
 
 	default:
-		fmt.Println("Unknow command")
+		fmt.Println("Unknown command. Use -h or -help for usage instructions.")
 		os.Exit(0)
 	}
 
-	raw, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
+	raw, err := FetchCurrentWeather(settings.Location, settings.ApiKey)
 	if err != nil {
 		fmt.Printf("Error fetching weather data: %v\n", err)
 		return
@@ -52,17 +54,24 @@ func main() {
 	}
 	currentWeather.PrintWeather()
 
-	// ticker := time.NewTicker(2 * time.Minute)
-	// defer ticker.Stop()
+	ticker := time.NewTicker(30 * time.Minute)
+	defer ticker.Stop()
+	N := 0
+	for t := range ticker.C {
+		N += 1
+		raw, err = FetchCurrentWeather(settings.Location, settings.ApiKey)
+		if err != nil {
+			fmt.Printf("Error fetching weather data: %v\n", err)
+			return
+		}
 
-	// for t := range ticker.C {
-	// 	weather, err := FetchCurrentWeather(settings.Query, settings.ApiKey)
-	// 	if err != nil {
-	// 		fmt.Printf("Error %v", err)
-	// 	}
-	// 	PrintCurrentWeather(weather)
+		err = currentWeather.UpdateWeather(raw)
+		if err != nil {
+			fmt.Printf("Error updating weather: %v\n", err)
+			return
+		}
+		currentWeather.PrintWeather()
+		fmt.Printf("tick at: %s.  N:%d \n", t.Format("15:04"), N)
 
-	// 	fmt.Println("tick at: ", t.Format("15:04"))
-	// 	//Database(weather)
-	// }
+	}
 }
