@@ -20,18 +20,18 @@ func (w *Weather) UpdateWeather(body []byte) error {
 
 func (w *Weather) PrintWeather() {
 
-	time := time.Unix(w.Current.TimeOfUpdate, 0)
-	ftime := time.Format("15:04")
+	time := time.Unix(w.Current.TimeOfUpdate, 0).Format("15:04")
 
-	fmt.Printf("Location: %s, "+"Temp: %0.fC, "+"Humidity: %d, "+"FeelsLike: %0.fC, "+"UV: %0.f, "+"AQI: %d,Rain: %0.fmm, "+"TimeOfUpdate: %s \n",
+	fmt.Printf("Location:[%s] , "+"Temp:[%0.fC] , "+"Humidity:[%d] , "+"FeelsLike:[%0.fC] , "+"UV:[%0.f] , "+"AQI:[%d] ,"+"Condition:[%s] ,"+"Rain:[%0.fmm] , "+"TimeOfUpdate: [%s] \n",
 		w.Location.Name,
 		w.Current.TemC,
 		w.Current.Humidity,
 		w.Current.FeelsLike,
 		w.Current.Uv,
 		w.Current.AirQuality.AQI,
+		w.Current.Condition.Text,
 		w.Current.Rain,
-		ftime,
+		time,
 	)
 }
 

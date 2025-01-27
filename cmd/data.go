@@ -10,6 +10,7 @@ import (
 )
 
 // DO I need this????
+// I think so...
 func SettingsPath(segments ...string) string {
 	config, err := os.UserConfigDir()
 	if err != nil {
@@ -32,7 +33,7 @@ func (s *Settings) init() {
 	}
 
 	fmt.Println("Pick one:")
-	fmt.Println("1-weatherapi.com, 2.coming soon :), :")
+	fmt.Println("1-weatherapi.com, 2.coming soon :)")
 	fmt.Scan(&s.Api)
 
 	fmt.Print("Your Location: ")
@@ -95,9 +96,9 @@ func (s *Settings) save() {
 }
 
 func (s *Settings) print() {
-	fmt.Printf("Weather API service: %s\n", s.Api)
-	fmt.Printf("Weather API ApiKey:  %s\n", s.ApiKey)
-	fmt.Printf("Weather API Query:   %s\n", s.Location)
+	fmt.Printf("Weather API service:    %s\n", s.Api)
+	fmt.Printf("Weather API ApiKey:     %s\n", s.ApiKey)
+	fmt.Printf("Weather API Location:   %s\n", s.Location)
 
 }
 

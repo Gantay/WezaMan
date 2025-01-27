@@ -4,8 +4,6 @@ import (
 	_ "Gantay/weather/tui"
 	"fmt"
 	"os"
-	"time"
-	_ "time"
 )
 
 var settings = Settings{Location: "", ApiKey: ""}
@@ -52,26 +50,30 @@ func main() {
 		fmt.Printf("Error updating weather: %v\n", err)
 		return
 	}
+
+	//TUI
+
+	//Print the weather to stdout
 	currentWeather.PrintWeather()
 
-	ticker := time.NewTicker(30 * time.Minute)
-	defer ticker.Stop()
-	N := 0
-	for t := range ticker.C {
-		N += 1
-		raw, err = FetchCurrentWeather(settings.Location, settings.ApiKey)
-		if err != nil {
-			fmt.Printf("Error fetching weather data: %v\n", err)
-			return
-		}
+	// ticker := time.NewTicker(30 * time.Minute)
+	// defer ticker.Stop()
+	// N := 0
+	// for t := range ticker.C {
+	// 	N += 1
+	// 	raw, err = FetchCurrentWeather(settings.Location, settings.ApiKey)
+	// 	if err != nil {
+	// 		fmt.Printf("Error fetching weather data: %v\n", err)
+	// 		return
+	// 	}
 
-		err = currentWeather.UpdateWeather(raw)
-		if err != nil {
-			fmt.Printf("Error updating weather: %v\n", err)
-			return
-		}
-		currentWeather.PrintWeather()
-		fmt.Printf("tick at: %s.  N:%d \n", t.Format("15:04"), N)
+	// 	err = currentWeather.UpdateWeather(raw)
+	// 	if err != nil {
+	// 		fmt.Printf("Error updating weather: %v\n", err)
+	// 		return
+	// 	}
+	// 	currentWeather.PrintWeather()
+	// 	fmt.Printf("tick at: %s.  N:%d \n", t.Format("15:04"), N)
 
-	}
+	// }
 }
