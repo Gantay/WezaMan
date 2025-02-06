@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Gantay/weather/tui"
 	_ "Gantay/weather/tui"
 	"fmt"
 	"os"
@@ -52,6 +53,7 @@ func main() {
 	}
 
 	//TUI
+	tui.Tea()
 
 	//Print the weather to stdout
 	currentWeather.PrintWeather()

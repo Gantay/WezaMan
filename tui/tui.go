@@ -24,12 +24,12 @@ func Tea() {
 
 		PaddingTop(0).
 		PaddingBottom(0).
-		PaddingRight(1).
-		PaddingLeft(1).
+		PaddingRight(0).
+		PaddingLeft(0).
 		//
-		MarginTop(2).
-		MarginRight(2).
-		MarginLeft(2).
+		MarginTop(0).
+		MarginRight(0).
+		MarginLeft(0).
 		MarginBottom(1).
 		Width(width)
 

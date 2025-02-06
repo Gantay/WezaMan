@@ -47,35 +47,5 @@ func FetchCurrentWeather(query string, apiKey string) ([]byte, error) {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	// gotWeather := &Weather
-	// err = json.Unmarshal(body, &gotWeather)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// currentTime := time.Now()
-	// timeString := currentTime.Format("2006-01-02:_15_")
-	// fileName := fmt.Sprintf("%s.json", timeString)
-
-	// config, err := os.UserConfigDir()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// var bodyFormated interface{}
-	// err = json.Unmarshal(body, &bodyFormated)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// formattedJSON, err := json.MarshalIndent(bodyFormated, "", " ")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// err = os.WriteFile(filepath.Join(config, "WeatherMan", fileName), formattedJSON, 0740)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	return body, nil
 }
