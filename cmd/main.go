@@ -7,11 +7,10 @@ import (
 	"os"
 )
 
-//var settings = config.Settings{Location: "", ApiKey: ""}
-
 func main() {
 	var settings config.Settings
 	//Load settings if not then init.
+	//add if check for nil.
 	settings.Load()
 
 	switch {

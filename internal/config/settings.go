@@ -7,6 +7,17 @@ import (
 	"path/filepath"
 )
 
+// DO I need this????
+// I think so...
+func SettingsPath(segments ...string) string {
+	config, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+	segments = append([]string{config, "WeatherMan"}, segments...)
+	return filepath.Join(segments...)
+}
+
 type Settings struct {
 	Api      string
 	Location string
